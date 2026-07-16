@@ -4,11 +4,8 @@
 End-to-end pipeline for producing the "Sisyphean Race" photorealistic image: six specific people running an exhausting uphill race toward a prize station (MIAL logo statue, FIFA World Cup trophy, glittering BUYME card). The working kit lives in `race-image/` — reference photos in `people/`, web-sourced assets in `assets/`, and the full generation prompt in `PROMPT.md`. The image itself has not been generated yet; generation will run through an external tool (Gemini/ChatGPT via the user's browser, or the OpenAI API). The project is version-controlled at the public GitHub repo `mcleviman-pixel/GRAPHICS` (branch `main`).
 
 ## Open Questions
-- User must pick a final version from `race-image/output/` (v1/v2/v3) or request another refinement round
-- The MIAL logo text on the statue never renders correctly (v1: abstract, v2: "M", v3: "HAL") — likely needs a local post-processing overlay of the real logo PNG instead of more generation rounds
-- Meital is still not clearly present as a second woman in red in v3
+- Awaiting user verdict on v4 (best version so far) — approve as final or run another likeness round
 - The OpenAI API key sits in the session scratchpad (`openai.key`) — remind the user to delete the key at platform.openai.com when iteration is done
-- Idit's reference photos are imperfect (sunglasses in one, cap + second person in the other) — a clean frontal photo would improve likeness
 
 ## Session Log
 
@@ -28,4 +25,10 @@ End-to-end pipeline for producing the "Sisyphean Race" photorealistic image: six
 - **What was done:** User funded an OpenAI account and provided an API key; generated three iterations with `gpt-image-1` via the `/v1/images/edits` endpoint (multipart curl, both labeled boards as reference images, size 1536x1024, quality high). Results in `race-image/output/race-v1..v3.png`. v1: composition and mood right, Idit clearly first; but one runner wore a gray tee, statue logo mangled, card read "BUYNE". v2: card fixed to "BUYME"+pelican; statue only "M"; lost one of the two women in red. v3: Daud clearly visible, but statue reads "HAL" and Meital still missing as a second red-jersey woman.
 - **Decisions:** Refinements chain the previous output as the first input image plus both boards — keeps composition stable while fixing specifics. API key stored only in the session scratchpad (`openai.key`), never in the repo.
 - **Notes / Caveats:** gpt-image-1 cannot reliably render the small "MIAL" lettering — plan B is compositing the real logo PNG onto the statue locally (System.Drawing overlay, same technique as the boards). Gender/person drift appears when swapping runners; targeted single-change prompts work better than multi-fix prompts.
+- **Related:** [[sisyphean-race-image-brief]], [[brand-assets]]
+
+### 2026-07-16 — v4: individual face refs + front-facing prizes [wip]
+- **What was done:** User reported v1–v3 likenesses were weak and the prize station looked like it was seen from behind. Root cause for likeness: the contact-sheet boards shrink each face to a small cell. Fix: sent the six ORIGINAL photos individually (full resolution, ordinal references in the prompt) plus the assets board; made local face crops with System.Drawing for Idit (left woman only from `idit-2`, excluding the bald man) and Meital (zoom from the group photo) — saved in `people/crops/`. Prompt now demands the pedestal be angled with all prize fronts toward the camera. Result `output/race-v4.png`: statue reads "MIAL", card reads "BUYME", all six jerseys correct (1 France + 1 Argentina + 4 Spain incl. both women), Idit clearly first, faces far closer to the references.
+- **Decisions:** Individual full-res photos with ordinal prompt references beat labeled contact sheets for identity fidelity; boards remain useful only for props/wardrobe. Fresh generation (not chained edit) when likeness needs rebuilding.
+- **Notes / Caveats:** Verified the prize-station text by zoom-cropping v4. Meital's glasses kept per her reference photo.
 - **Related:** [[sisyphean-race-image-brief]], [[brand-assets]]
