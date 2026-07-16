@@ -4,7 +4,7 @@
 End-to-end pipeline for producing the "Sisyphean Race" photorealistic image: six specific people running an exhausting uphill race toward a prize station (MIAL logo statue, FIFA World Cup trophy, glittering BUYME card). The working kit lives in `race-image/` — reference photos in `people/`, web-sourced assets in `assets/`, and the full generation prompt in `PROMPT.md`. The image itself has not been generated yet; generation will run through an external tool (Gemini/ChatGPT via the user's browser, or the OpenAI API). The project is version-controlled at the public GitHub repo `mcleviman-pixel/GRAPHICS` (branch `main`).
 
 ## Open Questions
-- Awaiting user verdict on v4 (best version so far) — approve as final or run another likeness round
+- Awaiting user verdict on v5 (face-fix round over v4) — per-person likeness check: Idit / Daud / Alon / Dudi / Elinor
 - The OpenAI API key sits in the session scratchpad (`openai.key`) — remind the user to delete the key at platform.openai.com when iteration is done
 
 ## Session Log
@@ -31,4 +31,10 @@ End-to-end pipeline for producing the "Sisyphean Race" photorealistic image: six
 - **What was done:** User reported v1–v3 likenesses were weak and the prize station looked like it was seen from behind. Root cause for likeness: the contact-sheet boards shrink each face to a small cell. Fix: sent the six ORIGINAL photos individually (full resolution, ordinal references in the prompt) plus the assets board; made local face crops with System.Drawing for Idit (left woman only from `idit-2`, excluding the bald man) and Meital (zoom from the group photo) — saved in `people/crops/`. Prompt now demands the pedestal be angled with all prize fronts toward the camera. Result `output/race-v4.png`: statue reads "MIAL", card reads "BUYME", all six jerseys correct (1 France + 1 Argentina + 4 Spain incl. both women), Idit clearly first, faces far closer to the references.
 - **Decisions:** Individual full-res photos with ordinal prompt references beat labeled contact sheets for identity fidelity; boards remain useful only for props/wardrobe. Fresh generation (not chained edit) when likeness needs rebuilding.
 - **Notes / Caveats:** Verified the prize-station text by zoom-cropping v4. Meital's glasses kept per her reference photo.
+- **Related:** [[sisyphean-race-image-brief]], [[brand-assets]]
+
+### 2026-07-16 — v5: tight-crop face replacement round [wip]
+- **What was done:** User said only Meital resembled her reference in v4. Key insight: Meital was the only runner whose reference was a tight face close-up — identity fidelity tracks how much of the reference frame the face fills. Made tight head crops for the other five (`people/crops/*-tight.jpg`, System.Drawing), then ran an edits round on v4: keep scene/prizes/jerseys, replace only the five faces (Meital untouched). Result `output/race-v5.png`; prize texts survived (zoom-verified: "MIAL" statue, "BUYME" card with pelican).
+- **Decisions:** Reference photos must be tight face crops — codify for all future person-likeness work. Dudi's only photo has cap+sunglasses; prompt describes his visible features and instructs bare head, likeness is best-effort.
+- **Notes / Caveats:** Daud's goatee weakened in v5 vs v4; if the user flags him, re-run a single-person fix with `daud-tight.jpg`.
 - **Related:** [[sisyphean-race-image-brief]], [[brand-assets]]
