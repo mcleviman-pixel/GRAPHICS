@@ -4,7 +4,7 @@
 End-to-end pipeline for producing the "Sisyphean Race" photorealistic image: six specific people running an exhausting uphill race toward a prize station (MIAL logo statue, FIFA World Cup trophy, glittering BUYME card). The working kit lives in `race-image/` — reference photos in `people/`, web-sourced assets in `assets/`, and the full generation prompt in `PROMPT.md`. The image itself has not been generated yet; generation will run through an external tool (Gemini/ChatGPT via the user's browser, or the OpenAI API). The project is version-controlled at the public GitHub repo `mcleviman-pixel/GRAPHICS` (branch `main`).
 
 ## Open Questions
-- Awaiting user verdict on v5 (face-fix round over v4) — per-person likeness check: Idit / Daud / Alon / Dudi / Elinor
+- Awaiting user approval of `output/race-final.png` (mud-race edit)
 - The OpenAI API key sits in the session scratchpad (`openai.key`) — remind the user to delete the key at platform.openai.com when iteration is done
 
 ## Session Log
@@ -37,4 +37,10 @@ End-to-end pipeline for producing the "Sisyphean Race" photorealistic image: six
 - **What was done:** User said only Meital resembled her reference in v4. Key insight: Meital was the only runner whose reference was a tight face close-up — identity fidelity tracks how much of the reference frame the face fills. Made tight head crops for the other five (`people/crops/*-tight.jpg`, System.Drawing), then ran an edits round on v4: keep scene/prizes/jerseys, replace only the five faces (Meital untouched). Result `output/race-v5.png`; prize texts survived (zoom-verified: "MIAL" statue, "BUYME" card with pelican).
 - **Decisions:** Reference photos must be tight face crops — codify for all future person-likeness work. Dudi's only photo has cap+sunglasses; prompt describes his visible features and instructs bare head, likeness is best-effort.
 - **Notes / Caveats:** Daud's goatee weakened in v5 vs v4; if the user flags him, re-run a single-person fix with `daud-tight.jpg`.
+- **Related:** [[sisyphean-race-image-brief]], [[brand-assets]]
+
+### 2026-07-16 — Mud-race image: pivot to user-supplied base, hybrid AI+local pipeline [shipped]
+- **What was done:** User rejected the desert scene and supplied a new mud-race base photo (`input/`), asking to (1) delete the tall long-haired man at the back, (2) improve Idit, (3) fix her bib "רודית"→"עידית". After failed attempts (v6: model removed an extra man and put glasses on Idit; masked inpaint v8a: gpt-image-1 masks are soft guidance, whole image regenerated; local rectangle compositing: model output is not geometrically aligned with input), the working pipeline was: v10 full edit (remove man + Idit face from `idit-tight.jpg` ref), v11 single-change edit (remove the glasses the model kept adding to Idit), then LOCAL System.Drawing repaint of all three Hebrew bibs (עידית/דאוד/אלינור) — sampled bib yellow, noise speckle, Arial Bold Hebrew. Final: `output/race-final.png`.
+- **Decisions:** Hebrew text in gpt-image-1 is hopeless — always restore text locally. gpt-image-1 has no true inpainting (mask ≈ suggestion) and outputs are never pixel-aligned with inputs, so patch-compositing between generations does not work; chain single-change edits instead. PS 5.1 scripts containing Hebrew must be written UTF-8 **with BOM**.
+- **Notes / Caveats:** Failed intermediates (v7a, v8a, v9-composite) deleted. The model repeatedly migrated Meital's glasses onto Idit — explicit "she has NO glasses / the OTHER woman keeps hers" wording is what finally worked.
 - **Related:** [[sisyphean-race-image-brief]], [[brand-assets]]
