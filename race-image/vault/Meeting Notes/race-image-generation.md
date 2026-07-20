@@ -6,6 +6,7 @@ End-to-end pipeline for producing the "Sisyphean Race" photorealistic image: six
 ## Open Questions
 - Mud-race edit rejected: user wants everyone except Idit pixel-identical to the original photo. Planned pipeline (paused mid-approval): DALL-E 2 true inpainting for the tall-man removal + manual head composite for Idit + local bib text. Resume if the user asks.
 - Awaiting user verdict on `output/podium-v1.png`; offer pixel-perfect local logo overlay if needed
+- Podium video produced — see [[podium-video]] in Publishing Log; awaiting user approval
 - The OpenAI API key sits in the session scratchpad (`openai.key`) — remind the user to delete the key at platform.openai.com when iteration is done
 
 ## Session Log

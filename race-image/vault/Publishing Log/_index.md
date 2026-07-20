@@ -4,4 +4,4 @@ Publish runs, outcomes, and post-mortems for GRAPHICS project deliverables.
 
 ## Topics
 
-- (none yet — first entry will be added when the final race image is generated and delivered)
+- [[podium-video]] — 30s Sora 2 podium ceremony video of the six employees receiving prizes, Idit closing with the trophy
