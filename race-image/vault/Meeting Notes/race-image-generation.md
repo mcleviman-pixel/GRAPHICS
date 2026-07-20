@@ -4,7 +4,8 @@
 End-to-end pipeline for producing the "Sisyphean Race" photorealistic image: six specific people running an exhausting uphill race toward a prize station (MIAL logo statue, FIFA World Cup trophy, glittering BUYME card). The working kit lives in `race-image/` — reference photos in `people/`, web-sourced assets in `assets/`, and the full generation prompt in `PROMPT.md`. The image itself has not been generated yet; generation will run through an external tool (Gemini/ChatGPT via the user's browser, or the OpenAI API). The project is version-controlled at the public GitHub repo `mcleviman-pixel/GRAPHICS` (branch `main`).
 
 ## Open Questions
-- Awaiting user approval of `output/race-final.png` (mud-race edit)
+- Mud-race edit rejected: user wants everyone except Idit pixel-identical to the original photo. Planned pipeline (paused mid-approval): DALL-E 2 true inpainting for the tall-man removal + manual head composite for Idit + local bib text. Resume if the user asks.
+- Awaiting user verdict on `output/podium-v1.png`; offer pixel-perfect local logo overlay if needed
 - The OpenAI API key sits in the session scratchpad (`openai.key`) — remind the user to delete the key at platform.openai.com when iteration is done
 
 ## Session Log
@@ -44,3 +45,9 @@ End-to-end pipeline for producing the "Sisyphean Race" photorealistic image: six
 - **Decisions:** Hebrew text in gpt-image-1 is hopeless — always restore text locally. gpt-image-1 has no true inpainting (mask ≈ suggestion) and outputs are never pixel-aligned with inputs, so patch-compositing between generations does not work; chain single-change edits instead. PS 5.1 scripts containing Hebrew must be written UTF-8 **with BOM**.
 - **Notes / Caveats:** Failed intermediates (v7a, v8a, v9-composite) deleted. The model repeatedly migrated Meital's glasses onto Idit — explicit "she has NO glasses / the OTHER woman keeps hers" wording is what finally worked.
 - **Related:** [[sisyphean-race-image-brief]], [[brand-assets]]
+
+### 2026-07-16 — Podium image with three logos [shipped]
+- **What was done:** New request: podium image with the MIAL, BUYME, and FIFA World Cup 2026 logos. (User also rejected `race-final.png` — they want the mud-race photo with everyone except Idit pixel-identical to the original; that thread is paused, see Open Questions.) Downloaded the official 2026 emblem (Wikipedia, `assets/worldcup-2026-logo.png`), generated with gpt-image-1 using the three logo PNGs as references: three-tier podium (1-2-3) on a stadium pitch at dusk, sponsor backdrop wall carrying all three logos. First attempt (`output/podium-v1.png`) came out clean — BUYME pelican+wordmark near-perfect, FIFA emblem good, MIAL monogram close to original and legible.
+- **Decisions:** Sponsor-wall composition chosen because a flat camera-facing banner keeps logos crisp and allows pixel-perfect local overlay of the real PNGs if ever needed.
+- **Notes / Caveats:** Tiny garble on the trophy's green base band; MIAL monogram styling approximate. Offer local overlay if the user wants exact logos.
+- **Related:** [[brand-assets]], [[sisyphean-race-image-brief]]
